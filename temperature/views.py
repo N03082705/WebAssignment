@@ -5,7 +5,7 @@ import time
 from django.http import JsonResponse
 from django.shortcuts import render
 from .models import TempReading
-from django.utils.dateparse import parse_datetime
+from datetime import datetime
 
 def readTemp():
 	tempfile = open("/sys/bus/w1/devices/28-00000698fc00/w1_slave")
@@ -24,8 +24,9 @@ def index(request):
 
 def api(request):
 	if request.method == 'POST':
-		input_from = parse_datetime(request.POST.get('from'))
-		input_to = parse_datetime(request.POST.get('to'))
+		format = "%Y-%m-%d %H:%M"
+		input_from = datetime.strptime(request.POST.get('from')), format)
+		input_to = datetime.strptime(request.POST.get('to')), format)
 		
 		values = TempReading.objects.filter(date__gt=input_from, date__lt=input_to)
 		return JsonResponse([{'date': v.date.isoformat(), 'temp': v.reading} for v in values])
