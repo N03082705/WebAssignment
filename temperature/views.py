@@ -29,6 +29,6 @@ def api(request):
 		input_to = datetime.strptime(request.POST.get('to')), format)
 		
 		values = TempReading.objects.filter(date__gt=input_from, date__lt=input_to)
-		return JsonResponse([{'date': v.date.isoformat(), 'temp': v.reading} for v in values])
+		return JsonResponse([{'date': v.date.isoformat(), 'temp': v.reading} for v in values], safe=False)
 	else:
 		return JsonResponse(readTemp())
