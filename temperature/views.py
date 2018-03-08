@@ -16,7 +16,7 @@ def readTemp():
 	tempF=tempC*9.0/5.0+32.0
 	return {
 		'date':currentTime,
-		'tempf':tempF
+		'temp':tempF
 	}
 
 def index(request):
@@ -25,9 +25,8 @@ def index(request):
 def api(request):
 	if request.method == 'POST':
 		format = "%Y-%m-%d %H:%M"
-		input_from = datetime.strptime(request.POST.get('from')), format)
-		input_to = datetime.strptime(request.POST.get('to')), format)
-		
+		input_from = datetime.strptime(request.POST.get('from'), format)
+		input_to = datetime.strptime(request.POST.get('to'), format)
 		values = TempReading.objects.filter(date__gt=input_from, date__lt=input_to)
 		return JsonResponse([{'date': v.date.isoformat(), 'temp': v.reading} for v in values], safe=False)
 	else:

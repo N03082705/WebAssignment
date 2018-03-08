@@ -8,12 +8,12 @@
 		function addLine(data){
 			var $tr = $('<tr></tr>');
 				$('<td>'+data.date+'</td>').appendTo($tr);
-				$('<td>'+data.tempf+'</td>').appendTo($tr);
+				$('<td>'+data.temp+'</td>').appendTo($tr);
 				$tr.prependTo($('#mainContainer'));
 		}
 		
 		function clearValues(){
-			$('#mainContainer').find('tbody').empty();
+			$('#mainContainer').empty();
 		}
 	
 		var autoFetchInterval = setInterval(function(){ 
@@ -31,7 +31,10 @@
 		         }, function(r){
 		         	clearInterval(autoFetchInterval);
 		         	clearValues();
-					Array.map(r, addLine);
+		         	
+		         	for(var i=0; i< r.length; i++){
+			         	addLine(r[i]);
+		         	}
 		         });
 		     });
 		 });
